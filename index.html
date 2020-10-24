@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8' />
+    <title>USM Prayer Walking</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css' rel='stylesheet' />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      #map {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+      }
+      
+      h2,
+      h3 {
+        margin: 10px;
+        font-size: 1.2em;
+      }
+
+      h1 {
+        font-size: 1em;
+      }
+
+      p {
+  font-size: 0.85em;
+  margin: 10px;
+  text-align: left;
+}
+
+/**
+* Create a position for the map
+* on the page */
+#map {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+}
+
+/**
+* Set rules for how the map overlays
+* (information box and legend) will be displayed
+* on the page. */
+.map-overlay {
+  position: relative;
+  top: 10px;
+  background: rgba(255, 255, 255, 0.8);
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
+  overflow: auto;
+  border-radius: 3px;
+}
+
+#features {
+  bottom: 10px;
+  margin: 0 auto;
+  height: 110px;
+  width: 75%;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+    </style>
+  </head>
+  <body>
+    <div id='map'></div>
+    <div class='map-overlay' id='features'><div id='name'><p>Tap a Building!</p></div></div>
+    <script>
+    // define access token
+    mapboxgl.accessToken = 'pk.eyJ1IjoiajAwN21vb3JlIiwiYSI6ImNrNmpvbHR4ejAxOWszcHIwbjY4MTlvem0ifQ.w1SlsInZW7DCYhLHsQwKKQ';
+    
+    // create map
+    var map = new mapboxgl.Map({
+      container: 'map', // container id
+      style: 'mapbox://styles/j007moore/ckgi8m42a1qdr19paujjlyynw', // map style URL from Mapbox
+      center: [-89.336307, 31.327911],
+      zoom: 17.51
+    });
+    // wait for map to load before adjusting it
+    map.on('load', function() {
+
+  // change info window on hover
+  map.on('click', function (e) {
+  var campusbuildings = map.queryRenderedFeatures(e.point, {
+    layers: ['unibuildings2']
+  });
+
+    if (campusbuildings.length > 0) {
+    document.getElementById('name').innerHTML = '<h3>' + campusbuildings[0].properties.name + '</h3>' + '<p>Pray ' + campusbuildings[0].properties.request; '</p>'
+  } else {
+    document.getElementById('name').innerHTML = '<p>Tap a building!</p>';
+  }
+  });
+    });
+    </script>
+  </body>
+</html>
